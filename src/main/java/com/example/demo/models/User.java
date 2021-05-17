@@ -2,8 +2,6 @@ package com.example.demo.models;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Date;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -53,8 +51,8 @@ public class User {
 	private String sex;
 	
 	@NotBlank
-	@Past
-	private Date dob;
+	@Size(max = 3)
+	private String age;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(	name = "user_roles", 
@@ -65,7 +63,7 @@ public class User {
 	public User() {
 	}
 
-	public User(String username, String email, String password, String firstname, String lastname, String phone, String address, String sex, Date dob) {
+	public User(String username, String email, String password, String firstname, String lastname, String phone, String address, String sex, String age) {
 		this.username = username;
 		this.email = email;
 		this.password = password;
@@ -74,7 +72,7 @@ public class User {
 		this.phone = phone;
 		this.address = address;
 		this.sex = sex;
-		this.dob = dob;
+		this.age = age;
 	}
 
 	public Long getId() {
@@ -149,12 +147,12 @@ public class User {
 		this.sex = sex;
 	}
 	
-	public Date getDob() {
-		return dob;
+	public String getAge() {
+		return age;
 	}
 
-	public void setDob(Date dob) {
-		this.dob = dob;
+	public void setAge(String age) {
+		this.age = age;
 	}
 	
 	

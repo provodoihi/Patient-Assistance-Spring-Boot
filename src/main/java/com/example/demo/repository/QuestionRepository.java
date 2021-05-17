@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.support.JpaRepositoryImplementati
 
 import com.example.demo.models.Question;
 
-public interface MedicalRecordRepository extends JpaRepositoryImplementation<Question,Long> {
+public interface QuestionRepository extends JpaRepositoryImplementation<Question,Long> {
 	List<Question> findByUserId(long userId);
 
 }

@@ -1,7 +1,5 @@
 package com.example.demo.models;
 
-import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,18 +9,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "questions")
+@Table(name = "question")
 
 public class Question {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
-	@NotBlank
-	private Date date;
-	
-	@NotBlank
-	private String doctor;
 	
 	@NotBlank
 	private long userId;
@@ -40,23 +32,21 @@ public class Question {
 	private String phone;
 	
 	@NotBlank
-	private String details;
+	private String address;
 	
 	@NotBlank
-	private String prescriptions;
-	
+	private String questionDetail;
+
 	public Question() {
 	}
 
-	public Question(Date date, String doctor, long userId, String firstname, String lastname, String phone, String details, String prescriptions) {
-		this.date = date;
-		this.doctor = doctor;
+	public Question(long userId, String firstname, String lastname, String phone, String address, String questionDetail) {
 		this.userId = userId;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.phone = phone;
-		this.details = details;
-		this.prescriptions = prescriptions;
+		this.address = address;
+		this.questionDetail = questionDetail;
 	}
 
 	public long getId() {
@@ -65,22 +55,6 @@ public class Question {
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-	
-	public String getDoctor() {
-		return doctor;
-	}
-
-	public void setDoctor(String doctor) {
-		this.doctor = doctor;
 	}
 
 	public long getUserId() {
@@ -116,20 +90,20 @@ public class Question {
 	}
 
 
-	public String getDetails() {
-		return details;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setDetails(String details) {
-		this.details = details;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	
-	public String getPrescriptions() {
-		return prescriptions;
+	public String getQuestionDetail() {
+		return questionDetail;
 	}
 
-	public void setPrescriptions(String prescriptions) {
-		this.prescriptions = prescriptions;
+	public void setQuestionDetail(String questionDetail) {
+		this.questionDetail = questionDetail;
 	}
-	
+
 }

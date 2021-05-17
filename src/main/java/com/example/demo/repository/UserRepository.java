@@ -17,11 +17,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	@Query(value = "select * from users u inner join user_roles ur on u.id = ur.user_id inner join roles r on r.id = ur.role_id where r.name=\"ROLE_ADMIN\"",nativeQuery = true)
 	List<User> findAdmin();
 	
-	@Query(value = "select * from users u inner join user_roles ur on u.id = ur.user_id inner join roles r on r.id = ur.role_id  where r.name=\"ROLE_DOCTOR\"",nativeQuery = true)
-	List<User> findDoctor();
+	@Query(value = "select * from users u inner join user_roles ur on u.id = ur.user_id inner join roles r on r.id = ur.role_id  where r.name=\"ROLE_CLINIC\"",nativeQuery = true)
+	List<User> findClinic();
 	
 	@Query(value = "select * from users u inner join user_roles ur on u.id = ur.user_id inner join roles r on r.id = ur.role_id  where r.name=\"ROLE_PATIENT\"",nativeQuery = true)
 	List<User> findPatient();
+	
+	@Query(value = "select * from users u inner join user_roles ur on u.id = ur.user_id inner join roles r on r.id = ur.role_id  where r.name=\"ROLE_ADVISOR\"",nativeQuery = true)
+	List<User> findAdvisor();
 	
 
 	Boolean existsByUsername(String username);

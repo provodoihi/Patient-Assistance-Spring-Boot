@@ -1,6 +1,5 @@
 package com.example.demo.payload.request;
 
-import java.util.Date;
 import java.util.Set;
 
 import javax.validation.constraints.*;
@@ -15,7 +14,7 @@ public class SignupRequest {
     @Email
     private String email;
     
-    private Set<String> role;
+	private Set<String> role;
     
     @NotBlank
     @Size(min = 6, max = 40)
@@ -42,10 +41,10 @@ public class SignupRequest {
 	private String sex;
 		
 	@NotBlank
-	@Past
-	private Date dob;
-	
-    public String getUsername() {
+	@Size(max = 3)
+	private String age;
+
+	public String getUsername() {
         return username;
     }
  
@@ -97,7 +96,7 @@ public class SignupRequest {
 		return address;
 	}
 
-	public void setAdress(String address) {
+	public void setAddress(String address) {
 		this.address = address;
 	}
 	
@@ -109,16 +108,16 @@ public class SignupRequest {
 		this.sex = sex;
 	}	
 	
-	public Date getDob() {
-		return dob;
+	public String getAge() {
+		return age;
 	}
 
-	public void setDob(Date dob) {
-		this.dob = dob;
+	public void setAge(String age) {
+		this.age = age;
 	}
 	
-    public Set<String> getRole() {
-      return this.role;
+	public Set<String> getRole() {
+		return role;
     }
     
     public void setRole(Set<String> role) {

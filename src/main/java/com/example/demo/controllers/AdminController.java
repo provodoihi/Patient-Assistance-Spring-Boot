@@ -13,15 +13,20 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.models.Answer;
+import com.example.demo.models.HospitalClinicInfo;
 import com.example.demo.models.Question;
 import com.example.demo.models.User;
-import com.example.demo.repository.MedicalRecordRepository;
+import com.example.demo.repository.AnswerRepository;
+import com.example.demo.repository.HospitalClinicRepository;
+import com.example.demo.repository.QuestionRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.services.UserDetailsImpl;
 
@@ -34,7 +39,13 @@ public class AdminController {
 	private UserRepository userRepository;
 	
 	@Autowired
-	private MedicalRecordRepository medicalRecordRepository;
+	private QuestionRepository questionRepository;
+	
+	@Autowired
+	private AnswerRepository answerRepository;
+	
+	@Autowired
+	private HospitalClinicRepository hospitalClinicRepository;
 	
 	@GetMapping("/admin")
 	@PreAuthorize("hasRole('ADMIN')")
@@ -100,12 +111,12 @@ public class AdminController {
 		}
 	}
 	
-	@GetMapping(value = "/admin/role/doctor")
-	@PreAuthorize("hasAnyRole('ADMIN', 'PATIENT', 'DOCTOR')")
-	public ResponseEntity<List<User>> getUserByRoleDoctor(){
+	@GetMapping(value = "/admin/role/clinic")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<List<User>> getUserByRoleClinic(){
 		try {
 			List<User> users = new ArrayList<User>();
-		    userRepository.findDoctor().forEach(users::add);
+		    userRepository.findClinic().forEach(users::add);
 		    if (users.isEmpty()) {
 		    	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 				}
@@ -131,9 +142,23 @@ public class AdminController {
 			return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@GetMapping(value = "/admin/role/advisor")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<List<User>> getUserByRoleAdvisor(){
+		try {
+			List<User> users = new ArrayList<User>();
+		    userRepository.findAdvisor().forEach(users::add);
+		    if (users.isEmpty()) {
+		    	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				}
+		    return new ResponseEntity<>(users, HttpStatus.OK);				
+			} 
+		catch (Exception e) {
+			return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 
-	
-	
 	@GetMapping("admin/user/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<User> getUserById(@PathVariable("id") long id){
@@ -155,7 +180,7 @@ public class AdminController {
 			userInfo.setFirstname(user.getFirstname());
 			userInfo.setLastname(user.getLastname());
 			userInfo.setAdress(user.getAddress());
-			userInfo.setDob(user.getDob());
+			userInfo.setAge(user.getAge());
 			return new ResponseEntity<>(userRepository.save(userInfo),HttpStatus.OK);
 		}
 		else {
@@ -175,16 +200,85 @@ public class AdminController {
 		}
 	}
 	
-	@GetMapping("admin/medicalRecord")
+	@GetMapping("/admin/hospitalclinic")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<List<Question>> getAllMedicalRecord(){
+	public ResponseEntity<List<HospitalClinicInfo>> getAllHospitalClinic(){
+		try {
+			List<HospitalClinicInfo> hospiclins = new ArrayList<HospitalClinicInfo>();
+			hospitalClinicRepository.findAll().forEach(hospiclins::add);
+			if (hospiclins.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			return new ResponseEntity<>(hospiclins, HttpStatus.OK);
+		}
+		catch (Exception e) {
+			return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+			
+	}
+	
+	@PostMapping("admin/hospitalclinic")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<HospitalClinicInfo> createHosclinInfo(@RequestBody HospitalClinicInfo hospitalClinicInfo){
+		try {
+			HospitalClinicInfo hosInfo = hospitalClinicRepository
+					.save(new HospitalClinicInfo(hospitalClinicInfo.getName(),hospitalClinicInfo.getAddress(),hospitalClinicInfo.getDistrict(),hospitalClinicInfo.getCity(),hospitalClinicInfo.getPhone(),hospitalClinicInfo.getSpeciality(),hospitalClinicInfo.getDescription()));
+			return new ResponseEntity<>(hosInfo, HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PutMapping("admin/hospitalclinic/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<HospitalClinicInfo> updateHosclinInfoById(@PathVariable("id") long id,@RequestBody HospitalClinicInfo hospitalClinicInfo){
+		Optional<HospitalClinicInfo> hospitalClinicId = hospitalClinicRepository.findById(id);
+		if (hospitalClinicId.isPresent()) {
+			HospitalClinicInfo hosInfo = hospitalClinicId.get();
+			hosInfo.setAddress(hospitalClinicInfo.getAddress());
+			hosInfo.setPhone(hospitalClinicInfo.getPhone());
+			return new ResponseEntity<>(hospitalClinicRepository.save(hosInfo), HttpStatus.OK);		
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@DeleteMapping("admin/hospitalclinic/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<HospitalClinicInfo> deleteHosclinInfoById(@PathVariable("id") long id){
+		try {
+			hospitalClinicRepository.deleteById(id);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("admin/question")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<List<Question>> getAllQuestion(){
 		try {
 			List<Question> questions = new ArrayList<Question>();
-			medicalRecordRepository.findAll().forEach(questions::add);
+			questionRepository.findAll().forEach(questions::add);
 			if (questions.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
 			return new ResponseEntity<>(questions, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("admin/answer")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<List<Answer>> getAllAnswer(){
+		try {
+			List<Answer> answers = new ArrayList<Answer>();
+			answerRepository.findAll().forEach(answers::add);
+			if (answers.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			return new ResponseEntity<>(answers, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -204,6 +298,5 @@ public class AdminController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
 	
 }

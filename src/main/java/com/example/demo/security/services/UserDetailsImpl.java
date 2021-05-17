@@ -1,7 +1,6 @@
 package com.example.demo.security.services;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -32,14 +31,14 @@ public class UserDetailsImpl implements UserDetails {
 	
 	private String sex;
 	
-	private Date dob;
+	private String age;
 	
 	@JsonIgnore
 	private String password;
 
 	private Collection<? extends GrantedAuthority> authorities;
 
-	public UserDetailsImpl(Long id, String username, String email, String password, String firstname, String lastname, String address, String sex, String phone, Date dob,
+	public UserDetailsImpl(Long id, String username, String email, String password, String firstname, String lastname, String address, String sex, String phone, String age,
 			Collection<? extends GrantedAuthority> authorities) {
 		this.id = id;
 		this.username = username;
@@ -48,7 +47,7 @@ public class UserDetailsImpl implements UserDetails {
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.address = address;
-		this.dob = dob;
+		this.age = age;
 		this.phone = phone;
 		this.sex = sex;
 		this.authorities = authorities;
@@ -69,7 +68,7 @@ public class UserDetailsImpl implements UserDetails {
 				user.getAddress(),
 				user.getPhone(),
 				user.getSex(),
-				user.getDob(),
+				user.getAge(),
 				authorities);
 	}
 
@@ -112,8 +111,8 @@ public class UserDetailsImpl implements UserDetails {
 		return phone;
 	}
 
-	public Date getDob() {
-		return dob;
+	public String getAge() {
+		return age;
 	}
 
 	public String getSex() {

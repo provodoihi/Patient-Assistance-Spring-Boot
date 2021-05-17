@@ -4,7 +4,6 @@ import com.example.demo.models.Appointment;
 import com.example.demo.repository.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -27,8 +26,8 @@ public class AppointmentServiceImplementation implements AppointmentService {
     }
 
     @Override
-    public List<Appointment> findByDoctorId(long doctorId) {
-        return appointmentRepository.findByDoctorId(doctorId);
+    public List<Appointment> findByClinicId(long clinicId) {
+        return appointmentRepository.findByClinicId(clinicId);
     }
     
     @Override
@@ -39,11 +38,6 @@ public class AppointmentServiceImplementation implements AppointmentService {
     @Override
     public List<Appointment> findAll() {
         return appointmentRepository.findAll();
-    }
-
-    @Override
-    public List<Appointment> findByDateRangeSortedByPrice(LocalDate startDate, LocalDate endDate) {
-        return appointmentRepository.findAllByAppointmentDateBetweenOrderByPriceAsc(startDate, endDate);
     }
 
     @Override

@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "hospital_clinic_info")
@@ -22,6 +23,16 @@ public class HospitalClinicInfo {
 	private String address;
 	
 	@NotBlank
+	private String district;
+	
+	@NotBlank
+	private String city;
+
+	@NotBlank
+	@Size(max = 20)
+	private String phone;
+
+	@NotBlank
 	private String speciality;
 	
 	@NotBlank
@@ -30,9 +41,12 @@ public class HospitalClinicInfo {
 	public HospitalClinicInfo() {
 	}
 
-	public HospitalClinicInfo(String name, String address, String speciality, String description) {
+	public HospitalClinicInfo(String name, String address, String district, String city, String phone, String speciality, String description) {
 		this.name = name;
 		this.address = address;
+		this.district = district;
+		this.city = city;
+		this.phone = phone;
 		this.speciality = speciality;
 		this.description = description;
 	}
@@ -59,6 +73,30 @@ public class HospitalClinicInfo {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+	
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public String getSpeciality() {

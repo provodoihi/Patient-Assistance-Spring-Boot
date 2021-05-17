@@ -106,10 +106,8 @@ public class AuthController {
 							 signUpRequest.getPhone(),
 							 signUpRequest.getAddress(),
 							 signUpRequest.getSex(),
-							 signUpRequest.getDob()
+							 signUpRequest.getAge()
 							 );
-		
-		System.out.println(user.getPassword());
 		
 		Set<String> strRoles = signUpRequest.getRole();
 		Set<Role> roles = new HashSet<>();
@@ -133,7 +131,7 @@ public class AuthController {
 					roles.add(clinicRole);
 
 					break;
-				case "doctor":
+				case "advisor":
 					Role adviseRole = roleRepository.findByName(ERole.ROLE_ADVISOR)
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 					roles.add(adviseRole);
