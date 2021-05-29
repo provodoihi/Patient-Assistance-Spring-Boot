@@ -12,6 +12,8 @@ public interface AppointmentService {
 
     List<Appointment> findByClinicId(long clinicId);
     
+    List<Appointment> findByNameOfClinic(String nameOfClinic);
+    
     List<Appointment> findByPatientId(long patientId);
     
     List<Appointment> findAll();

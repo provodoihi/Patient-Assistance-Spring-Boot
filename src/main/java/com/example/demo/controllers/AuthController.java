@@ -63,7 +63,8 @@ public class AuthController {
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();	
 		String firstname = userDetails.getFirstname();
 		String lastname = userDetails.getLastname();
-		String fullname = lastname+" "+firstname;		
+		String fullname = lastname+" "+firstname;	
+		String phone = userDetails.getPhone();
 		List<String> roles = userDetails.getAuthorities().stream()
 				.map(item -> item.getAuthority())
 				.collect(Collectors.toList());
@@ -74,6 +75,7 @@ public class AuthController {
 												 userDetails.getUsername(), 
 												 userDetails.getEmail(),
 												 fullname,
+												 phone,
 												 roles));
 	}
 

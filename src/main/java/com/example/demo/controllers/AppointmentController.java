@@ -42,6 +42,13 @@ public class AppointmentController {
     public List<Appointment> findByClinicId(@PathVariable long clinicId) {
         return appointmentService.findByClinicId(clinicId);
     }
+	
+	// GET request to return appointments with specific clinicName
+	@PreAuthorize("hasAnyRole('CLINIC', 'ADMIN', 'PATIENT')")
+    @RequestMapping(path = "/clinic/{nameOfClinic}", method = RequestMethod.GET)
+    public List<Appointment> findByClinicName(@PathVariable("nameOfClinic") String nameOfClinic) {
+        return appointmentService.findByNameOfClinic(nameOfClinic);
+    }
 
     // GET request to return appointments with specific patientId
 	@PreAuthorize("hasAnyRole('CLINIC', 'ADMIN', 'PATIENT')")

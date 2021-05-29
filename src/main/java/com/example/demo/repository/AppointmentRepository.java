@@ -16,6 +16,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     List<Appointment> findByPatientId(long patientId);
     
+    List<Appointment> findByNameOfClinic(String nameOfClinic);
+    
 	@Query(value = "select * from appointments where status = 1;",nativeQuery = true)
     List<Appointment> findScheduledWithEndBeforeDate(@Param("now") LocalDateTime now);
 

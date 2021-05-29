@@ -43,46 +43,6 @@ public class PublicController {
 		}		
 	}
 	
-	@GetMapping("/hospitalclinic/findDistrict")
-	public ResponseEntity<List<HospitalClinicInfo>> findHospitalClinicByDistrict(@RequestParam("district") String district){
-		try {
-			List<HospitalClinicInfo> hosclinic = new ArrayList<HospitalClinicInfo>();
-			if (district == null) {
-				hospitalClinicRepository.findAll().forEach(hosclinic::add);
-			}
-			else {
-				hospitalClinicRepository.findHosclinInfoByDistrict(district);
-			}
-			
-			if (hosclinic.isEmpty()) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-			}
-			return new ResponseEntity<>(hosclinic, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-	
-	@GetMapping("/hospitalclinic/findCity")
-	public ResponseEntity<List<HospitalClinicInfo>> findHospitalClinicByCity(@RequestParam("city") String city){
-		try {
-			List<HospitalClinicInfo> hosclinic = new ArrayList<HospitalClinicInfo>();
-			if (city == null) {
-				hospitalClinicRepository.findAll().forEach(hosclinic::add);
-			}
-			else {
-				hospitalClinicRepository.findHosclinInfoByDistrict(city);
-			}
-			
-			if (hosclinic.isEmpty()) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-			}
-			return new ResponseEntity<>(hosclinic, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-	
 	@GetMapping("/hospitalclinic/findSpeciality")
 	public ResponseEntity<List<HospitalClinicInfo>> findHospitalClinicBySpeciality(@RequestParam("speciality") String speciality){
 		try {
@@ -91,7 +51,27 @@ public class PublicController {
 				hospitalClinicRepository.findAll().forEach(hosclinic::add);
 			}
 			else {
-				hospitalClinicRepository.findHosclinInfoByDistrict(speciality);
+				hospitalClinicRepository.findBySpeciality(speciality).forEach(hosclinic::add);
+			}
+			
+			if (hosclinic.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			return new ResponseEntity<>(hosclinic, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/hospitalclinic/find")
+	public ResponseEntity<List<HospitalClinicInfo>> searchHospitalClinicByKeyword(@RequestParam("keyword") String keyword){
+		try {
+			List<HospitalClinicInfo> hosclinic = new ArrayList<HospitalClinicInfo>();
+			if (keyword == null) {
+				hospitalClinicRepository.findAll().forEach(hosclinic::add);
+			}
+			else {
+				hospitalClinicRepository.search(keyword).forEach(hosclinic::add);
 			}
 			
 			if (hosclinic.isEmpty()) {

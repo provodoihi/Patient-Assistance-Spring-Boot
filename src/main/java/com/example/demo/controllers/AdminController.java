@@ -222,7 +222,7 @@ public class AdminController {
 	public ResponseEntity<HospitalClinicInfo> createHosclinInfo(@RequestBody HospitalClinicInfo hospitalClinicInfo){
 		try {
 			HospitalClinicInfo hosInfo = hospitalClinicRepository
-					.save(new HospitalClinicInfo(hospitalClinicInfo.getName(),hospitalClinicInfo.getAddress(),hospitalClinicInfo.getDistrict(),hospitalClinicInfo.getCity(),hospitalClinicInfo.getPhone(),hospitalClinicInfo.getSpeciality(),hospitalClinicInfo.getDescription()));
+					.save(new HospitalClinicInfo(hospitalClinicInfo.getName(),hospitalClinicInfo.getAddress(),hospitalClinicInfo.getPhone(),hospitalClinicInfo.getSpeciality(),hospitalClinicInfo.getDescription()));
 			return new ResponseEntity<>(hosInfo, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

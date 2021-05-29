@@ -38,7 +38,7 @@ public class UserDetailsImpl implements UserDetails {
 
 	private Collection<? extends GrantedAuthority> authorities;
 
-	public UserDetailsImpl(Long id, String username, String email, String password, String firstname, String lastname, String address, String sex, String phone, String age,
+	public UserDetailsImpl(Long id, String username, String email, String password, String firstname, String lastname, String address, String phone, String sex, String age,
 			Collection<? extends GrantedAuthority> authorities) {
 		this.id = id;
 		this.username = username;
@@ -47,8 +47,8 @@ public class UserDetailsImpl implements UserDetails {
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.address = address;
-		this.age = age;
 		this.phone = phone;
+		this.age = age;	
 		this.sex = sex;
 		this.authorities = authorities;
 	}
