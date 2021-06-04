@@ -102,7 +102,7 @@ public class PatientController {
 	public ResponseEntity<Question> createQuestion(@RequestBody Question question){
 		try {
 			Question questionInfo = questionRepository
-					.save(new Question(question.getUserId(),question.getFirstname(),question.getLastname(),question.getPhone(),question.getAddress(),question.getQuestionDetail()));
+					.save(new Question(question.getUserId(), question.getFullname(), question.getPhone(), question.getQuestionDetail()));
 			return new ResponseEntity<>(questionInfo, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

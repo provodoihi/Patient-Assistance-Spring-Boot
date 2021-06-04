@@ -21,18 +21,11 @@ public class Question {
 
 	@NotBlank
 	@Size(max = 50)
-	private String firstname;
+	private String fullname;
 
-	@NotBlank
-	@Size(max = 50)
-	private String lastname;
-	
 	@NotBlank
 	@Size(max = 20)
 	private String phone;
-	
-	@NotBlank
-	private String address;
 	
 	@NotBlank
 	private String questionDetail;
@@ -40,12 +33,10 @@ public class Question {
 	public Question() {
 	}
 
-	public Question(long userId, String firstname, String lastname, String phone, String address, String questionDetail) {
+	public Question(long userId, String fullname, String phone, String questionDetail) {
 		this.userId = userId;
-		this.firstname = firstname;
-		this.lastname = lastname;
+		this.fullname = fullname;
 		this.phone = phone;
-		this.address = address;
 		this.questionDetail = questionDetail;
 	}
 
@@ -64,21 +55,13 @@ public class Question {
 	public void setUserId(long userId) {
 		this.userId = userId;
 	}
-
-	public String getFirstname() {
-		return firstname;
+	
+	public String getFullname() {
+		return fullname;
 	}
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-
-	public String getLastname() {
-		return lastname;
-	}
-
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
+	public void setFullname(String fullname) {
+		this.fullname = fullname;
 	}
 
 	public String getPhone() {
@@ -87,15 +70,6 @@ public class Question {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
-	}
-
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
 	}
 	
 	public String getQuestionDetail() {
