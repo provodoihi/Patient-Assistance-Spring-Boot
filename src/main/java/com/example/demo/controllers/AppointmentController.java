@@ -4,6 +4,7 @@ import com.example.demo.models.Appointment;
 import com.example.demo.security.services.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -24,23 +25,45 @@ public class AppointmentController {
     }
     
     // GET request to return all appointments 
-	@RequestMapping(path = "/all", method = RequestMethod.GET)
-    List<Appointment> findAll() {
-        return appointmentService.findAll();
+	@GetMapping("/all")
+	@PreAuthorize("hasRole('ADMIN')")
+    ResponseEntity<List<Appointment>> findAll() {
+		try {
+			List<Appointment> appointments = appointmentService.findAll();
+			if (appointments.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			return new ResponseEntity<>(appointments, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
     }
 	
     // GET request to return specific appointments
-	@PreAuthorize("hasAnyRole('CLINIC', 'ADMIN', 'PATIENT')")
-    @RequestMapping(path = "/{appointmentId}", method = RequestMethod.GET)
-    public Optional<Appointment> findById(@PathVariable Long appointmentId) {
-        return appointmentService.findById(appointmentId);
+    @GetMapping("/{appointmentId}")
+    @PreAuthorize("hasAnyRole('CLINIC', 'ADMIN', 'PATIENT')")
+    public ResponseEntity<Appointment> findById(@PathVariable("appointmentId") Long appointmentId) {
+    	Optional<Appointment> appointments = appointmentService.findById(appointmentId);
+        if (appointments.isPresent()) {
+			return new ResponseEntity<>(appointments.get(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
     }
 
     // GET request to return appointments with specific clinicId
-	@PreAuthorize("hasAnyRole('CLINIC', 'ADMIN', 'PATIENT')")
+	@PreAuthorize("hasAnyRole('CLINIC', 'ADMIN')")
     @RequestMapping(path = "/clinic/{clinicId}", method = RequestMethod.GET)
-    public List<Appointment> findByClinicId(@PathVariable long clinicId) {
-        return appointmentService.findByClinicId(clinicId);
+    public ResponseEntity<List<Appointment>> findByClinicId(@PathVariable("clinicId") long clinicId) {
+		try {
+			List<Appointment> appointments = appointmentService.findByClinicId(clinicId);
+			if (appointments.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			return new ResponseEntity<>(appointments, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
     }
 	
 	// GET request to return appointments with specific clinicName
@@ -51,10 +74,19 @@ public class AppointmentController {
     }
 
     // GET request to return appointments with specific patientId
+	@GetMapping("/patient/{patientId}")
 	@PreAuthorize("hasAnyRole('CLINIC', 'ADMIN', 'PATIENT')")
-    @RequestMapping(path = "/patient/{patientId}", method = RequestMethod.GET)
-    public List<Appointment> findByPatientId(@PathVariable long patientId) {
-        return appointmentService.findByPatientId(patientId);
+    public ResponseEntity<List<Appointment>> findByPatientId(@PathVariable("patientId") long patientId) {
+		try {
+			List<Appointment> appointments = appointmentService.findByPatientId(patientId);
+			if (appointments.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			return new ResponseEntity<>(appointments, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+        
     }
 	
     // POST request to add new appointments

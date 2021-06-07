@@ -10,12 +10,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.models.Answer;
 import com.example.demo.models.Question;
@@ -25,6 +28,9 @@ import com.example.demo.repository.QuestionRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.services.UserDetailsImpl;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
+@RestController
+@RequestMapping("/api")
 public class AdvisorController {
 	@Autowired
 	private UserRepository userRepository;
@@ -155,7 +161,7 @@ public class AdvisorController {
 	public ResponseEntity<Answer> deleteAnswerById(@PathVariable("id") long id){
 		try {
 			answerRepository.deleteById(id);
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}

@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "appointments")
@@ -15,8 +15,8 @@ public class Appointment {
    
     private Timestamp createdAt = new Timestamp(System.currentTimeMillis());
     
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime appointmentStartTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+    private OffsetDateTime appointmentStartTime;
     
     private String description;
     
@@ -37,7 +37,7 @@ public class Appointment {
 	public Appointment() {	
 	}
 
-    public Appointment(Timestamp createdAt, long clinicId, long patientId, LocalDateTime appointmentStartTime, String nameOfClinic, String nameOfPatient, String phoneOfPatient, AppointmentStatus status, String description) {
+    public Appointment(Timestamp createdAt, long clinicId, long patientId, OffsetDateTime appointmentStartTime, String nameOfClinic, String nameOfPatient, String phoneOfPatient, AppointmentStatus status, String description) {
         this.createdAt = createdAt;
         this.appointmentStartTime = appointmentStartTime;
         this.description = description;
@@ -49,7 +49,7 @@ public class Appointment {
         this.status = status;
     }
 
-    public Appointment(LocalDateTime appointmentStartTime, String nameOfClinic) {
+    public Appointment(OffsetDateTime appointmentStartTime, String nameOfClinic) {
         this.appointmentStartTime = appointmentStartTime;
         this.nameOfClinic = nameOfClinic;
     }
@@ -78,11 +78,11 @@ public class Appointment {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getAppointmentStartTime() {
+    public OffsetDateTime getAppointmentStartTime() {
         return appointmentStartTime;
     }
 
-    public void setAppointmentStartTime(LocalDateTime appointmentStartTime) {
+    public void setAppointmentStartTime(OffsetDateTime appointmentStartTime) {
         this.appointmentStartTime = appointmentStartTime;
     }
     

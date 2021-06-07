@@ -193,7 +193,7 @@ public class AdminController {
 	public ResponseEntity<User> deleteUserById(@PathVariable("id") long id){
 		try {
 			userRepository.deleteById(id);
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(HttpStatus.OK);
 		} 
 		catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -248,7 +248,7 @@ public class AdminController {
 	public ResponseEntity<HospitalClinicInfo> deleteHosclinInfoById(@PathVariable("id") long id){
 		try {
 			hospitalClinicRepository.deleteById(id);
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
