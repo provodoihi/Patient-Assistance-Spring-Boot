@@ -4,7 +4,7 @@ import com.example.demo.models.Appointment;
 import com.example.demo.repository.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.*;
 
 @Component("appointmentService")
@@ -57,7 +57,7 @@ public class AppointmentServiceImplementation implements AppointmentService {
     
     @Override
     public void updateAllAppointmentsStatuses() {
-        appointmentRepository.findScheduledWithEndBeforeDate(LocalDateTime.now())
+        appointmentRepository.findScheduledWithEndBeforeDate(OffsetDateTime.now())
                 .forEach(appointment -> {
                     appointment.setStatus(appointment.getStatus().CONFIRMED);
                     create(appointment);

@@ -52,8 +52,8 @@ public class AppointmentController {
     }
 
     // GET request to return appointments with specific clinicId
-	@PreAuthorize("hasAnyRole('CLINIC', 'ADMIN')")
-    @RequestMapping(path = "/clinic/{clinicId}", method = RequestMethod.GET)
+    @GetMapping("/clinic/{clinicId}")
+    @PreAuthorize("hasAnyRole('CLINIC', 'ADMIN')")
     public ResponseEntity<List<Appointment>> findByClinicId(@PathVariable("clinicId") long clinicId) {
 		try {
 			List<Appointment> appointments = appointmentService.findByClinicId(clinicId);
@@ -66,12 +66,6 @@ public class AppointmentController {
 		}
     }
 	
-	// GET request to return appointments with specific clinicName
-	@PreAuthorize("hasAnyRole('CLINIC', 'ADMIN', 'PATIENT')")
-    @RequestMapping(path = "/clinic/{nameOfClinic}", method = RequestMethod.GET)
-    public List<Appointment> findByClinicName(@PathVariable("nameOfClinic") String nameOfClinic) {
-        return appointmentService.findByNameOfClinic(nameOfClinic);
-    }
 
     // GET request to return appointments with specific patientId
 	@GetMapping("/patient/{patientId}")
@@ -97,19 +91,11 @@ public class AppointmentController {
         return appointmentService.create(appointment);
     }
 
-    // PUT request to update appointments
-	@PreAuthorize("hasAnyRole('CLINIC', 'ADMIN')")
-    @RequestMapping(path = "/{appointmentId}", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
-    @ResponseStatus(HttpStatus.OK)
-    public Appointment update(@PathVariable Long appointmentId, @RequestBody Appointment appointment) {
-        return appointmentService.update(appointmentId, appointment);
-    }
-
-    // PATCH request to update status of an appointment
+    // PATCH request to update status of an appointment 
 	@PreAuthorize("hasAnyRole('CLINIC', 'PATIENT')")
     @RequestMapping(path = "/{appointmentId}", method = RequestMethod.PATCH, produces = "application/json", consumes = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public Appointment updateStatus(@PathVariable Long appointmentId, @RequestBody Appointment appointment) {
+    public Appointment updateStatus(@PathVariable("appointmentId") Long appointmentId, @RequestBody Appointment appointment) {
         return appointmentService.updateStatus(appointmentId, appointment);
     }
 

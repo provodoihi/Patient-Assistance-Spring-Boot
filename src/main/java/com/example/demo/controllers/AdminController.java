@@ -70,30 +70,6 @@ public class AdminController {
 		}
 			
 	}
-		
-	
-	@GetMapping("/admin/user/find")
-	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<List<User>> getUsersByPhone(@RequestParam("phone") String phone){
-		try {
-			List<User> users = new ArrayList<User>();
-			if (phone == null) {
-				userRepository.findAll().forEach(users::add);
-			}
-			else {
-				userRepository.findByPhone(phone).forEach(users::add);
-			}
-			
-			if (users.isEmpty()) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-			}
-			return new ResponseEntity<>(users, HttpStatus.OK);
-		}
-		catch (Exception e) {
-			return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-			
-	}
 	
 	@GetMapping(value = "/admin/role/admin")
 	@PreAuthorize("hasRole('ADMIN')")
@@ -155,6 +131,26 @@ public class AdminController {
 		    return new ResponseEntity<>(users, HttpStatus.OK);				
 			} 
 		catch (Exception e) {
+			return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("admin/user/find")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<List<User>> searchUserByKeyword(@RequestParam("keyword") String keyword){
+		try {
+			List<User> users = userRepository.search(keyword);
+			if (keyword == null) {
+				userRepository.findAll().forEach(users::add);
+			}
+			else {
+				userRepository.search(keyword).forEach(users::add);
+			}
+			if (users.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			return new ResponseEntity<>(users, HttpStatus.OK);
+		} catch (Exception e) {
 			return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
