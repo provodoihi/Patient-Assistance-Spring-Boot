@@ -32,15 +32,23 @@ public class HospitalClinicInfo {
 	@NotBlank
 	private String description;
 	
+	@NotBlank
+	private Double latitude;
+	
+	@NotBlank
+	private Double longtitude;
+
 	public HospitalClinicInfo() {
 	}
 
-	public HospitalClinicInfo(String name, String address, String phone, String speciality, String description) {
+	public HospitalClinicInfo(String name, String address, String phone, String speciality, String description, Double latitude, Double longtitude) {
 		this.name = name;
 		this.address = address;
 		this.phone = phone;
 		this.speciality = speciality;
 		this.description = description;
+		this.latitude = latitude;
+		this.longtitude = longtitude;
 	}
 	
 	public long getId() {
@@ -90,5 +98,22 @@ public class HospitalClinicInfo {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
+	}
+
+	public double getLongtitude() {
+		return longtitude;
+	}
+
+	public void setLongtitude(Double longtitude) {
+		this.longtitude = longtitude;
+	}
+
 
 }
