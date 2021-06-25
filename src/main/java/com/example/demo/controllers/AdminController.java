@@ -139,7 +139,7 @@ public class AdminController {
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<User>> searchUserByKeyword(@RequestParam("keyword") String keyword){
 		try {
-			List<User> users = userRepository.search(keyword);
+			List<User> users = new ArrayList<User>();
 			if (keyword == null) {
 				userRepository.findAll().forEach(users::add);
 			}
@@ -265,6 +265,29 @@ public class AdminController {
 		}
 	}
 	
+	@GetMapping("admin/question/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<Question> getQuestionById(@PathVariable("id") long id){
+		Optional<Question> questionID = questionRepository.findById(id);
+		if (questionID.isPresent()) {
+			return new ResponseEntity<>(questionID.get(),HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@DeleteMapping("/admin/question/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<Question> deleteQuestionById(@PathVariable("id") long id){
+		try {
+			questionRepository.deleteById(id);
+			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 	@GetMapping("admin/answer")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<Answer>> getAllAnswer(){
@@ -277,6 +300,29 @@ public class AdminController {
 			return new ResponseEntity<>(answers, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("admin/answer/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<Answer> getAnswerById(@PathVariable("id") long id){
+		Optional<Answer> answerID = answerRepository.findById(id);
+		if (answerID.isPresent()) {
+			return new ResponseEntity<>(answerID.get(),HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@DeleteMapping("/admin/answer/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<Question> deleteAnswerById(@PathVariable("id") long id){
+		try {
+			questionRepository.deleteById(id);
+			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
