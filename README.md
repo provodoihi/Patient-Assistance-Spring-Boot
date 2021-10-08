@@ -1,5 +1,5 @@
 # Requirements:
-- JDK
+- JDK 8 or newer
 - Maven
 - MySQL server
 # Running the app manually
@@ -8,7 +8,7 @@ mvn spring-boot:run
 ```
 Or
 ```
-java -jar medical-management-0.0.1-SNAPSHOT.jar
+java -jar patient-assistance-0.0.5.jar
 ```
 # Config:
 Open src/main/resources/application.properties
@@ -19,15 +19,14 @@ spring.datasource.username= root
 spring.datasource.password= 123456
 ```
 # After first run:
+Insert those statements to MySQL:
 ```
-Insert those statement to MySQL:
 INSERT INTO roles(name) VALUES('ROLE_DOCTOR');
 INSERT INTO roles(name) VALUES('ROLE_PATIENT');
 INSERT INTO roles(name) VALUES('ROLE_ADMIN');
 ```
 
 # API documentation:
-More detailed check swagger.json file.
 Default port: 8080. APIs provided for now:
 | Methods | URLs              | Actions                                                       |
 |:-------:|-------------------|---------------------------------------------------------------|

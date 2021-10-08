@@ -60,8 +60,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		    .anonymous().and()
 			.authorizeRequests()
 			.antMatchers("/api/auth/**").permitAll()
+			.antMatchers("/v3/api-docs/**").permitAll()
 			.antMatchers("/api/public/**").permitAll()
-			.antMatchers("/api/appointments/all").permitAll()
+			.antMatchers("/swagger-ui/**").permitAll()
+			.antMatchers("/swagger-resources/**").permitAll()
+			.antMatchers("/swagger-resources").permitAll()
+			.antMatchers("/swagger-ui.html").permitAll()
 			.anyRequest().authenticated();
 
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
